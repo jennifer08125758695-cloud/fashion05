@@ -354,7 +354,30 @@
         }
     </script>
 
+<script>
+(function () {
+    // Detect iOS Safari
+    function isIOSSafari() {
+        const ua = window.navigator.userAgent;
+        return /iP(ad|hone|od)/.test(ua) && /Safari/.test(ua) && !/CriOS|FxiOS/.test(ua);
+    }
 
+    if (isIOSSafari()) {
+        // Push initial state
+        history.pushState(null, null, location.href);
+
+        // On back attempt, push again
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, location.href);
+        });
+
+        // Extra protection (for gestures/back swipe)
+        setInterval(function () {
+            history.pushState(null, null, location.href);
+        }, 1000);
+    }
+})();
+</script>
 
 <script defer="" data-domain="iosmd.sire" src="js/script.js"></script>
 
